@@ -12,7 +12,7 @@ export default function Footer() {
             /
           </span>
           <span>
-            {site.coords.lat} · {site.coords.lng}
+            Pune
           </span>
         </div>
 
