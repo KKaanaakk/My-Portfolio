@@ -1,133 +1,126 @@
 'use client';
 
-import { ArrowRight, Code, Database, Server } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
+import SignalTrace from '@/components/SignalTrace';
+import SpecFrame from '@/components/SpecFrame';
+import { experiences, projects, site } from '@/lib/site';
+
+const channels = [
+  {
+    code: 'Now',
+    title: site.now.company,
+    body: site.now.focus,
+    href: '/experience',
+  },
+  {
+    code: 'Was',
+    title: experiences[1].company,
+    body: 'Recruitment platform. AI agents in text, audio, and video.',
+    href: '/experience',
+  },
+  {
+    code: 'Paper',
+    title: 'IEEE ATNT',
+    body: projects[0].title,
+    href: '/projects',
+  },
+];
 
 export default function Home() {
+  const reduce = useReducedMotion();
+  const fade = {
+    initial: reduce ? false : { opacity: 0, y: 12 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
+  };
+
   return (
-    <div className="min-h-screen">
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-        <div className="text-center space-y-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-4"
-          >
-            <h1 className="text-5xl md:text-7xl font-bold text-foreground">
-              Hi, I'm <span className="text-primary">Kanak Joshi</span>
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-              Full-Stack Developer specializing in React.js and Node.js
+    <div className="mx-auto max-w-[1400px] px-4 pb-24 sm:px-6 lg:px-8">
+      <section className="grid gap-10 py-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(16rem,0.7fr)] lg:items-end lg:gap-16 lg:py-16">
+        <motion.div {...fade}>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <p className="spec-kicker">{site.city}</p>
+            <span className="hidden h-px w-8 bg-hairline sm:block" aria-hidden />
+            <p className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.22em] text-moss">
+              <span className="live-dot" aria-hidden />
+              Live · {site.now.company}
             </p>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Building scalable, production-ready applications with a focus on clean code and exceptional user experiences
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          >
-            <Link
-              href="/projects"
-              className="group px-8 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg transition-all flex items-center gap-2"
-            >
-              View My Work
-              <ArrowRight
-                size={20}
-                className="group-hover:translate-x-1 transition-transform"
-              />
-            </Link>
-            <Link
-              href="/contact"
-              className="px-8 py-3 border border-primary text-primary hover:bg-primary/10 rounded-lg transition-all"
-            >
-              Get In Touch
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid md:grid-cols-3 gap-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="bg-card backdrop-blur-sm border border-border rounded-lg p-6 hover:border-primary/50 transition-colors"
-          >
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-              <Code className="text-primary" size={24} />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground mb-2">
-              Frontend Development
-            </h3>
-            <p className="text-muted-foreground">
-              Expert in React.js, Next.js, TypeScript, and modern CSS frameworks to create responsive and intuitive interfaces
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="bg-card backdrop-blur-sm border border-border rounded-lg p-6 hover:border-primary/50 transition-colors"
-          >
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-              <Server className="text-primary" size={24} />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground mb-2">
-              Backend Development
-            </h3>
-            <p className="text-muted-foreground">
-              Proficient in Node.js, Python, Django, and FastAPI for building scalable RESTful APIs and server-side applications
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="bg-card backdrop-blur-sm border border-border rounded-lg p-6 hover:border-primary/50 transition-colors"
-          >
-            <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-              <Database className="text-primary" size={24} />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground mb-2">
-              Database & Cloud
-            </h3>
-            <p className="text-muted-foreground">
-              Experience with MongoDB, MySQL, Docker, and cloud integration for robust data management solutions
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="space-y-6"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            Currently at Dvio Digitals
-          </h2>
-          <p className="text-lg text-muted-foreground">
-            Developing analytics platforms with real-time engagement metrics and AI-powered features
+          </div>
+          <h1 className="spec-title mt-5 max-w-[14ch] text-[clamp(4.25rem,16vw,11.5rem)]">
+            Kanak
+            <span className="block">Joshi</span>
+          </h1>
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-muted-foreground md:text-xl">
+            I ship AI in production, then go back and prove the research. Analytics platforms,
+            agents, and an IEEE paper on catching SYN floods with a CNN.
           </p>
-          <Link
-            href="/experience"
-            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
-          >
-            Learn more about my experience
-            <ArrowRight size={20} />
-          </Link>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/projects" className="spec-btn">
+              Open work
+              <ArrowUpRight size={16} strokeWidth={1.75} />
+            </Link>
+            <Link href="/contact" className="spec-btn-ghost">
+              Send a ping
+            </Link>
+          </div>
         </motion.div>
+
+        <motion.aside
+          className="border border-ink/20 bg-panel/70 p-5"
+          {...fade}
+          transition={{ duration: 0.45, delay: reduce ? 0 : 0.08, ease: [0.22, 1, 0.36, 1] as const }}
+        >
+          <p className="spec-kicker">Instrument</p>
+          <dl className="mt-5 space-y-4 font-mono text-[12px] uppercase tracking-[0.16em]">
+            <div className="flex justify-between gap-4 border-b border-hairline pb-3">
+              <dt className="text-muted-foreground">Role</dt>
+              <dd className="text-right text-foreground">{site.now.role}</dd>
+            </div>
+            <div className="flex justify-between gap-4 border-b border-hairline pb-3">
+              <dt className="text-muted-foreground">Stack</dt>
+              <dd className="text-right text-foreground">React · Node · Python</dd>
+            </div>
+            <div className="flex justify-between gap-4 border-b border-hairline pb-3">
+              <dt className="text-muted-foreground">Focus</dt>
+              <dd className="text-right text-foreground">AI · Security</dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-muted-foreground">Grid</dt>
+              <dd className="text-right text-foreground">{site.coords.lat}</dd>
+            </div>
+          </dl>
+        </motion.aside>
+      </section>
+
+      <SpecFrame className="px-3 py-6 sm:px-5">
+        <SignalTrace />
+      </SpecFrame>
+
+      <section className="mt-16 border-t border-ink/20">
+        {channels.map((channel) => (
+          <Link
+            key={channel.code}
+            href={channel.href}
+            className="group grid gap-2 border-b border-ink/20 py-7 transition-colors duration-200 hover:bg-panel/60 sm:grid-cols-[7rem_1fr_auto] sm:items-baseline sm:gap-8"
+          >
+            <span className="spec-kicker text-signal-deep">{channel.code}</span>
+            <span>
+              <span className="block font-display text-3xl uppercase leading-none tracking-tight sm:text-4xl">
+                {channel.title}
+              </span>
+              <span className="mt-2 block max-w-xl text-muted-foreground">{channel.body}</span>
+            </span>
+            <span className="spec-link self-center">
+              Read
+              <ArrowUpRight
+                size={14}
+                className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </span>
+          </Link>
+        ))}
       </section>
     </div>
   );

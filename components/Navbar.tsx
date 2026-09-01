@@ -3,74 +3,90 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
-
-const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/experience', label: 'Experience' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/contact', label: 'Contact' },
-];
+import { useEffect, useState } from 'react';
+import { navLinks, site } from '@/lib/site';
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [open]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link href="/" className="text-xl font-bold text-foreground hover:text-primary transition-colors">
-            Kanak Joshi
-          </Link>
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-ink/15 bg-limestone/90 backdrop-blur-sm">
+      <div className="mx-auto flex h-[4.25rem] max-w-[1400px] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="group flex min-w-0 items-baseline gap-3">
+          <span className="font-display text-2xl font-semibold uppercase leading-none tracking-tight">
+            {site.name}
+          </span>
+          <span className="hidden font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground sm:inline">
+            {site.coords.lat}
+          </span>
+        </Link>
 
-          <div className="hidden md:flex space-x-8">
-            {navLinks.map((link) => (
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+          {navLinks.map((link) => {
+            const active = pathname === link.href;
+            return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  pathname === link.href
-                    ? 'text-primary'
-                    : 'text-muted-foreground'
+                className={`font-mono text-[12px] uppercase tracking-[0.2em] transition-colors duration-200 ${
+                  active ? 'text-signal' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {link.label}
               </Link>
-            ))}
-          </div>
+            );
+          })}
+        </nav>
 
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-foreground"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          className="inline-flex h-11 w-11 items-center justify-center text-foreground md:hidden"
+          aria-expanded={open}
+          aria-controls="mobile-nav"
+          aria-label={open ? 'Close menu' : 'Open menu'}
+        >
+          {open ? <X size={22} strokeWidth={1.75} /> : <Menu size={22} strokeWidth={1.75} />}
+        </button>
       </div>
 
-      {isOpen && (
-        <div className="md:hidden bg-background/95 backdrop-blur-sm border-t border-border">
-          <div className="px-4 py-4 space-y-3">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className={`block text-sm font-medium transition-colors hover:text-primary ${
-                  pathname === link.href
-                    ? 'text-primary'
-                    : 'text-muted-foreground'
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-    </nav>
+      {open ? (
+        <nav
+          id="mobile-nav"
+          className="border-t border-ink/15 bg-limestone px-4 py-6 md:hidden"
+          aria-label="Mobile"
+        >
+          <ul className="space-y-1">
+            {navLinks.map((link) => {
+              const active = pathname === link.href;
+              return (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={`block py-3 font-display text-4xl uppercase leading-none tracking-tight ${
+                      active ? 'text-signal' : 'text-foreground'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      ) : null}
+    </header>
   );
 }

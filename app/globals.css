@@ -2,62 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
-    --primary: 262 83% 58%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 262 30% 96%;
-    --secondary-foreground: 262 83% 58%;
-    --muted: 262 30% 96%;
-    --muted-foreground: 262 10% 40%;
-    --accent: 262 30% 96%;
-    --accent-foreground: 262 83% 58%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 262 20% 90%;
-    --input: 262 20% 90%;
-    --ring: 262 83% 58%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-  }
+    --limestone: #e4e8e2;
+    --ink: #141816;
+    --panel: #eef1eb;
+    --signal: #e84e0f;
+    --signal-deep: #9a3412;
+    --signal-ink: #fffaf6;
+    --moss: #1f5c43;
+    --trace: #7a847a;
+    --hairline: #c5ccc3;
 
-  .dark {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
-    --primary: 262 83% 58%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 262 30% 96%;
-    --secondary-foreground: 262 83% 58%;
-    --muted: 262 30% 96%;
-    --muted-foreground: 262 10% 40%;
-    --accent: 262 30% 96%;
-    --accent-foreground: 262 83% 58%;
-    --destructive: 0 84.2% 60.2%;
+    --background: 100 10% 90%;
+    --foreground: 140 9% 8%;
+    --card: 90 14% 93%;
+    --card-foreground: 140 9% 8%;
+    --popover: 90 14% 93%;
+    --popover-foreground: 140 9% 8%;
+    --primary: 17 88% 48%;
+    --primary-foreground: 24 100% 98%;
+    --secondary: 110 8% 86%;
+    --secondary-foreground: 140 9% 8%;
+    --muted: 110 8% 86%;
+    --muted-foreground: 140 6% 32%;
+    --accent: 17 88% 48%;
+    --accent-foreground: 24 100% 98%;
+    --destructive: 0 72% 46%;
     --destructive-foreground: 0 0% 98%;
-    --border: 262 20% 90%;
-    --input: 262 20% 90%;
-    --ring: 262 83% 58%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    --border: 110 8% 78%;
+    --input: 110 8% 78%;
+    --ring: 17 88% 48%;
+    --radius: 0px;
   }
 }
 
@@ -66,7 +42,137 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply overflow-x-hidden bg-background text-foreground antialiased;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    background-color: var(--limestone);
+    background-image:
+      linear-gradient(to right, rgba(20, 24, 22, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(20, 24, 22, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-position: -1px -1px;
+  }
+
+  body::before {
+    content: '';
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  ::selection {
+    background: var(--signal);
+    color: var(--signal-ink);
+  }
+
+  a,
+  button {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .spec-kicker {
+    @apply font-mono text-[11px] uppercase tracking-[0.28em] text-muted-foreground;
+  }
+
+  .spec-title {
+    @apply font-display uppercase leading-[0.8] tracking-[-0.03em] text-foreground;
+  }
+
+  .spec-link {
+    @apply inline-flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.18em] text-foreground transition-colors duration-200 hover:text-signal;
+  }
+
+  .spec-btn {
+    @apply inline-flex items-center justify-center gap-2 bg-ink px-6 py-3 font-mono text-[12px] uppercase tracking-[0.18em] text-limestone transition-colors duration-200 hover:bg-signal hover:text-signal-ink;
+  }
+
+  .spec-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 border border-ink px-6 py-3 font-mono text-[12px] uppercase tracking-[0.18em] text-ink transition-colors duration-200 hover:border-signal hover:bg-signal hover:text-signal-ink;
+  }
+
+  .spec-chip {
+    @apply border border-hairline bg-panel px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground;
+  }
+
+  .live-dot {
+    @apply relative inline-flex h-2 w-2 bg-moss;
+  }
+
+  .live-dot::after {
+    content: '';
+    @apply absolute inset-0 bg-moss;
+    animation: live-ping 2.4s ease-out infinite;
+  }
+}
+
+.signal-stroke {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: wave-draw 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signal-stroke {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .signal-label {
+    display: none;
+  }
+}
+
+@keyframes wave-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes live-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot::after {
+    animation: none;
+    opacity: 0;
   }
 }
